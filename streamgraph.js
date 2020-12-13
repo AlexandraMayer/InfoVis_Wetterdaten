@@ -12,29 +12,33 @@ var svg = d3.select("#my_dataviz")
         "translate(" + margin.left + "," + margin.top + ")");
 
 // Parse the Data
-d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/5_OneCatSevNumOrdered_wide.csv", function(data) {
+d3.csv("TestDaten.csv", function(data) {
 
-    console.log(data)
+    console.log(data);
     // List of groups = header of the csv files
-    var keys = data.columns.slice(1);
+    var keys = data.columns;
+
+    console.log(keys);
 
     // Add X axis
     var x = d3.scaleLinear()
-        .domain(d3.extent(data, function(d) { return d.year; }))
+        .domain(d3.extent(data, function(d) {
+            console.log(d.Monat);
+            return Number(d.Monat); }))
         .range([ 0, width ]);
     svg.append("g")
-        .attr("transform", "translate(0," + height*0.8 + ")")
-        .call(d3.axisBottom(x).tickSize(-height*.7).tickValues([1900, 1925, 1975, 2000]))
-        .select(".domain").remove()
+        .attr("transform", "translate(0," + height*0.9 + ")")
+        .call(d3.axisBottom(x));
+        //.select(".domain").remove()
     // Customization
-    svg.selectAll(".tick line").attr("stroke", "#b8b8b8")
+    //svg.selectAll(".tick line").attr("stroke", "#b8b8b8")
 
     // Add X axis label:
     svg.append("text")
         .attr("text-anchor", "end")
         .attr("x", width)
-        .attr("y", height-30 )
-        .text("Time (year)");
+        .attr("y", height)
+        .text("Month");
 
     // Add Y axis
     var y = d3.scaleLinear()
@@ -79,7 +83,7 @@ d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_data
 
     // Area generator
     var area = d3.area()
-        .x(function(d) { return x(d.data.year); })
+        .x(function(d) { return x(d.data.Monat); })
         .y0(function(d) { return y(d[0]); })
         .y1(function(d) { return y(d[1]); })
 
