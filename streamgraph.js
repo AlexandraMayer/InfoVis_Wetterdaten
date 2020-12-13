@@ -39,7 +39,7 @@ function drawGraph(){
             .attr("text-anchor", "end")
             .attr("x", width)
             .attr("y", height)
-            .text("Month");
+            .text("Monat");
 
         // Add Y axis
         var y = d3.scaleLinear()
