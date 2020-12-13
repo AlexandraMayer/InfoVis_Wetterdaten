@@ -21,13 +21,14 @@ Fertig & In-Review:
 - Ein Streamgraph mit Testdaten wird angezeig
 - Tooltip vorhanden 
 - Dokumentation 
-- Dynamischer Jahreswechsel (2019, 2020)
+- Jahreswechsel (2019, 2020)
 
 To Do:
 - Tooltip Text verbessern
 - Legende einfügen
 - Richtige Daten einfügen
 - Layout anpassen
+- Dynamischer Jahreswechsel
 
 google docs:
 Präsentationsvorbereitungen: https://docs.google.com/document/d/1MX3wBYyD-8DUhYtaz3AhmgjJM-kpsJMKjZiNoAzAz-Y/edit
