@@ -14,9 +14,8 @@ var svg = d3.select("#my_dataviz")
 // Parse the Data
 d3.csv("TestDaten.csv", function(data) {
 
-    console.log(data);
     // List of groups = header of the csv files
-    var keys = data.columns;
+    var keys = data.columns.slice(1);
 
     console.log(keys);
 
@@ -42,7 +41,7 @@ d3.csv("TestDaten.csv", function(data) {
 
     // Add Y axis
     var y = d3.scaleLinear()
-        .domain([-100000, 100000])
+        .domain([-2, 2])
         .range([ height, 0 ]);
 
     // color palette
@@ -74,6 +73,7 @@ d3.csv("TestDaten.csv", function(data) {
     }
     var mousemove = function(d,i) {
         grp = keys[i]
+        value = data.i
         Tooltip.text(grp)
     }
     var mouseleave = function(d) {
