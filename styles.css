@@ -1,0 +1,39 @@
+/*Überschrift*/
+h2 {
+    font-weight: bold;
+    color: #000;
+    font-size: 24px;
+}
+
+/*Schrift Button*/
+label {
+    font-size: 16px;
+}
+
+/*Achsenbeschriftung*/
+body {
+    font: 10px sans-serif;
+}
+
+/*Hintergrund Chart*/
+.chart {
+    background: #fff;
+}
+
+p {
+    font: 12px helvetica;
+}
+
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px;
+    shape-rendering: crispEdges;
+}
+
+button {
+    position: absolute;
+    right: 50px;
+    top: 10px;
+}

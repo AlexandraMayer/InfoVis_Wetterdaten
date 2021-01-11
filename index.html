@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" rel="stylesheet" href="styles.css" />
+    <title>Streamgraph: Wetterdaten und Coronazahlen</title>
+    <script src="https://d3js.org/d3.v2.js"></script>
+</head>
+<body>
+<h2>Streamgraph: Wetterdaten und Coronazahlen</h2>
+<input type="radio" id="btn19" name="years" onclick="changeYear(2019)">
+<label for="btn19">Jahr 2019</label>
+<input type="radio" id="btn20" name="years" onclick="changeYear(2020)" checked="true">
+<label for="btn20">Jahr 2020</label>
+
+<div class="chart"></div>
+<script src="script.js"></script>
+</body>
+</html>
