@@ -62,12 +62,6 @@ function drawGraph() {
         // Reset graph params
         svg.selectAll('*').remove();
 
-        if (inputFile === "TestDaten2020.csv") {
-            document.getElementById("btn20").checked = true;
-        } else if (inputFile === "TestDaten2019.csv") {
-            document.getElementById("btn19").checked = true;
-        }
-
         data.forEach(function(d) {
             d.date = format.parse(d.date);
             d.normvalue = +d.normvalue;
