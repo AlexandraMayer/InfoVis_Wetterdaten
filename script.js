@@ -183,18 +183,23 @@ function setUpGraph() {
                 .attr("stroke-width", "0px"),
                 tooltip.style("visibility", "hidden");
         })
-
+    
+    var border = 100;
+    var lineHeight = d3.select(".chart").node().getBoundingClientRect().height - border + "px";
+    var lineTop = d3.select(".chart").node().getBoundingClientRect().top + border*0.6 + "px";
+    var lineBottom = d3.select(".chart").node().getBoundingClientRect().bottom  + "px";
+    var lineLeft = d3.select(".chart").node().getBoundingClientRect().left  + "px";
     var vertical = d3.select(".chart")
         .append("div")
         .attr("class", "remove")
         .style("position", "absolute")
         .style("z-index", "19")
         .style("width", "2px")
-        .style("height", "350px")
-        .style("top", "130px")
-        .style("bottom", "30px")
-        .style("left", "0px")
-        .style("background", "#fff");
+        .style("height", lineHeight)
+        .style("top", lineTop)
+        .style("bottom", lineBottom)
+        .style("left", lineLeft)
+        .style("background", "#ffffff");
 
     d3.select(".chart")
         .on("mousemove", function(){
