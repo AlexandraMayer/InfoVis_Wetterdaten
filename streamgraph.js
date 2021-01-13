@@ -36,6 +36,7 @@ let loadPromise =  function loadData() {
 }
 
 function setUpGraph() {
+    // Add X axis
     var x = d3.scaleLinear()
         .domain(d3.extent(year === 2019 ? data2019 : data2020, function(d) {
             return Number(d.Monat); }))
