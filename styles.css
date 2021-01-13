@@ -74,6 +74,7 @@ header h2 {
  .middle .box {
 	 width: 150px;
 	 height: 150px;
+     border: 1px solid  #007e90;
 	 background-color: #fff;
 	 transition: all 250ms ease;
 	 will-change: transition;
@@ -81,14 +82,15 @@ header h2 {
 	 text-align: center;
 	 cursor: pointer;
 	 position: relative;
-	 font-weight: 450;
+	 font-weight: 900;
 }
+/* move box by click down*/
  .middle .box:active {
 	 transform: translateY(10px);
 }
  .middle .box span {
-	 posiftion: absolute;
-	 transform: translate(0, 60px);
+	 position: absolute;
+	 transform: translate(0, 30px);
 	 left: 0;
 	 right: 0;
 	 transition: all 300ms ease;
