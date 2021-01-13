@@ -1,4 +1,3 @@
-
 /*Schrift Button*/
 label {
     font-size: 16px;
@@ -99,17 +98,18 @@ header h2 {
 }
  .middle .box span:before {
 	 font-size: 1.2em;
-	 font-family: FontAwesome;
+	 font-family: "Font Awesome 5 Free";
 	 display: block;
 	 transform: translateY(-80px);
 	 opacity: 0;
 	 transition: all 300ms ease-in-out;
-	 font-weight: normal;
+	 font-weight: 900;
 	 color: white;
 }
- .middle .year-20 span:before {
-	 content: "\f072";
+
+.middle .year-19 span:before {
+    content: "\f072";
 }
- .middle .year-19 span:before {
-	 content: "\f074";
+ .middle .year-20 span:before {
+	 content: "\e074";
 }

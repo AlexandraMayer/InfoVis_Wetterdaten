@@ -183,7 +183,7 @@ function setUpGraph() {
                 .attr("stroke-width", "0px"),
                 tooltip.style("visibility", "hidden");
         })
-    
+
     var border = 100;
     var lineHeight = d3.select(".chart").node().getBoundingClientRect().height - border + "px";
     var lineTop = d3.select(".chart").node().getBoundingClientRect().top + border*0.6 + "px";
