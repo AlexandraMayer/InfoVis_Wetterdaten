@@ -9,7 +9,7 @@ var layers1;
 
 var format = d3.time.format("%m/%d/%y");
 
-var margin = {top: 70, right: 40, bottom: 30, left: 30};
+var margin = {top: 40, right: 40, bottom: 30, left: 30};
 var width = document.body.clientWidth - margin.left - margin.right;
 var height = 450 - margin.top - margin.bottom;
 
@@ -36,9 +36,7 @@ var tooltip = d3.select("body")
     .attr("class", "remove")
     .style("position", "absolute")
     .style("z-index", "20")
-    .style("visibility", "hidden")
-    .style("top", "100px")
-    .style("left", "55px");
+    .style("visibility", "hidden");
 
 var x = d3.time.scale()
     .range([0, width]);
@@ -140,7 +138,6 @@ function setUpGraph() {
         .on("mousemove", function(d, i) {
             mouse = d3.mouse(this);
             mouseX = mouse[0];
-            mouseY = mouse[1];
             var invertedx = x.invert(mouseX);
             var selected = (d.values);
             for (var k = 0; k < selected.length; k++) {
@@ -156,11 +153,16 @@ function setUpGraph() {
             mousedate = datearray[indexClosest];
             valueData = d.values[indexClosest].value;
 
+            let mouseDocument = d3.mouse(document.getElementById("document"));
+            let mouseDocumentX = mouseDocument[0];
+            let mouseDocumentY = mouseDocument[1];
+
+            const tooltipWidth = 230;
             let tooltipBoxLeft;
-            if (mouseX > width - 110) {
-                tooltipBoxLeft = mouseX - 80;
+            if (mouseDocumentX > document.body.clientWidth - margin.right - tooltipWidth) {
+                tooltipBoxLeft = mouseDocumentX - tooltipWidth - 7;
             } else {
-                tooltipBoxLeft = mouseX + 40;
+                tooltipBoxLeft = mouseDocumentX + 2;
             }
 
             d3.select(this)
@@ -168,9 +170,9 @@ function setUpGraph() {
                 .attr("stroke", strokecolor)
                 .attr("stroke-width", "0.5px")
             tooltip
-                .html("<div style='font-size:16px; border-width: 1px; border-radius:10px; border-color:gray; background-color:white; opacity:0.9; border-style:solid; width: 110px'>" + "&nbsp;" + d.key + "<br>&nbsp;" + valueData + "</div>")
+                .html("<div style='font-size:16px; border-width: 1px; border-radius:10px; border-color:gray; background-color:white; opacity:0.9; border-style:solid; width:" + tooltipWidth + "px'>" + "&nbsp;" + d.key + "<br>&nbsp;" + valueData + "</div>")
                 .style("left", tooltipBoxLeft + "px")
-                .style("top", mouseY + 120 + "px")
+                .style("top", mouseDocumentY - 40 + "px")
                 .style("visibility", "visible");
         })
         .on("mouseout", function(d, i) {
@@ -180,13 +182,25 @@ function setUpGraph() {
                 .attr("opacity", "1");
             d3.select(this)
                 .classed("hover", false)
-                .attr("stroke-width", "0px"),
-                tooltip.style("visibility", "hidden");
+                .attr("stroke-width", "0px")
+            tooltip.style("visibility", "hidden");
         })
+
+    // todo Legende verbessern
+    var legend = d3.select(".legend").append("svg")
+        .attr("width", 300)
+        .attr("height", 120);
+    legend.append("text").attr("x", 25).attr("y", 25).text("Legende").style("font-size", "20px").attr("alignment-baseline","middle")
+    legend.append("circle").attr("cx",30).attr("cy",45).attr("r", 6).style("fill", colorrange[2])
+    legend.append("text").attr("x", 50).attr("y", 50).text("Abweichung Wettervorhersage").style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("circle").attr("cx",30).attr("cy",70).attr("r", 6).style("fill", colorrange[1])
+    legend.append("text").attr("x", 50).attr("y", 75).text("Anzahl Flüge Deutschland").style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("circle").attr("cx",30).attr("cy",95).attr("r", 6).style("fill", colorrange[0])
+    legend.append("text").attr("x", 50).attr("y", 100).text("Gesamt Corona Positive").style("font-size", "15px").attr("alignment-baseline","middle")
 
     var border = 100;
     var lineHeight = d3.select(".chart").node().getBoundingClientRect().height - border + "px";
-    var lineTop = d3.select(".chart").node().getBoundingClientRect().top + border*0.6 + "px";
+    var lineTop = d3.select(".chart").node().offsetTop + margin.top + "px";
     var lineBottom = d3.select(".chart").node().getBoundingClientRect().bottom  + "px";
     var lineLeft = d3.select(".chart").node().getBoundingClientRect().left  + "px";
     var vertical = d3.select(".chart")
@@ -199,7 +213,8 @@ function setUpGraph() {
         .style("top", lineTop)
         .style("bottom", lineBottom)
         .style("left", lineLeft)
-        .style("background", "#ffffff");
+        .style("background", "#ffffff")
+        .style("visibility", "hidden");
 
     d3.select(".chart")
         .on("mousemove", function(){
