@@ -11,105 +11,124 @@ var svg = d3.select("#my_dataviz")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
-function drawGraph(){
-    // Parse the Data
-    d3.csv(inputFile, function(data) {
-        // Reset graph params
-        svg.selectAll('*').remove();
-        // List of groups = header of the csv files
-        var keys = data.columns.slice(1);
+data2019 = [];
+data2020 = [];
+keys = [];
+var layers0;
+var layers1;
+var layers;
+var area
 
-        console.log(keys);
+let loadPromise =  function loadData() {
+    return new Promise((resolve, reject) => {
+        setTimeout( () => {
+            d3.csv("TestDaten2020.csv", function (data) {
+                data2020 = data;
+                keys = data.columns.slice(1)
+                d3.csv("TestDaten2019.csv", function (data) {
+                    data2019 = data
+                    resolve([data2019, data2020])
+                })
+            })
+        } , 2000
+        );
+    });
+}
 
-        // Add X axis
-        var x = d3.scaleLinear()
-            .domain(d3.extent(data, function(d) {
-                console.log(d.Monat);
-                return Number(d.Monat); }))
-            .range([ 0, width ]);
-        svg.append("g")
-            .attr("transform", "translate(0," + height*0.9 + ")")
-            .call(d3.axisBottom(x));
-        //.select(".domain").remove()
-        // Customization
-        //svg.selectAll(".tick line").attr("stroke", "#b8b8b8")
+function setUpGraph() {
+    var x = d3.scaleLinear()
+        .domain(d3.extent(year === 2019 ? data2019 : data2020, function(d) {
+            return Number(d.Monat); }))
+        .range([ 0, width ]);
 
-        // Add X axis label:
-        svg.append("text")
-            .attr("text-anchor", "end")
-            .attr("x", width)
-            .attr("y", height)
-            .text("Monat");
+    // Add X axis label:
+    svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("x", width)
+        .attr("y", height)
+        .text("Monat");
 
-        // Add Y axis
-        var y = d3.scaleLinear()
-            .domain([-2, 2])
-            .range([ height, 0 ]);
+    // Add Y axis
+    var y = d3.scaleLinear()
+        .domain([-2, 2])
+        .range([ height, 0 ]);
 
-        // color palette
-        var color = d3.scaleOrdinal()
-            .domain(keys)
-            .range(d3.schemeDark2);
+    // color palette
+    var color = d3.scaleOrdinal()
+        .domain(keys)
+        .range(d3.schemeDark2);
 
-        //stack the data?
-        var stackedData = d3.stack()
-            .offset(d3.stackOffsetSilhouette)
-            .keys(keys)
-            (data)
+    //stack the data?
+    var stackedData = d3.stack().keys(keys).offset(d3.stackOffsetWiggle)
+    layers1 = stackedData(data2019)
+    layers0 = stackedData(data2020)
+    layers = layers0.concat(layers1);
 
-        // create a tooltip
-        var Tooltip = svg
-            .append("text")
-            .attr("x", 0)
-            .attr("y", 0)
-            .style("opacity", 0)
-            .style("font-size", 17)
+    // create a tooltip
+    var Tooltip = svg
+        .append("text")
+        .attr("x", 0)
+        .attr("y", 0)
+        .style("opacity", 0)
+        .style("font-size", 17)
 
-        // Three function that change the tooltip when user hover / move / leave a cell
-        var mouseover = function(d) {
-            Tooltip.style("opacity", 1)
-            d3.selectAll(".myArea").style("opacity", .2)
-            d3.select(this)
-                .style("stroke", "black")
-                .style("opacity", 1)
-        }
-        var mousemove = function(d,i) {
-            grp = keys[i]
-            Tooltip.text(grp)
-        }
-        var mouseleave = function(d) {
-            Tooltip.style("opacity", 0)
-            d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
-        }
+    // Three function that change the tooltip when user hover / move / leave a cell
+    var mouseover = function(d) {
+        Tooltip.style("opacity", 1)
+        d3.selectAll(".myArea").style("opacity", .2)
+        d3.select(this)
+            .style("stroke", "black")
+            .style("opacity", 1)
+    }
+    var mousemove = function(d,i) {
+        grp = keys[i]
+        Tooltip.text(grp)
+    }
+    var mouseleave = function(d) {
+        Tooltip.style("opacity", 0)
+        d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
+    }
 
-        // Area generator
-        var area = d3.area()
-            .x(function(d) { return x(d.data.Monat); })
-            .y0(function(d) { return y(d[0]); })
-            .y1(function(d) { return y(d[1]); })
+    // Area generator
+    area = d3.area()
+        .x(function(d) { return x(d.data.Monat); })
+        .y0(function(d) { return y(d[0]); })
+        .y1(function(d) { return y(d[1]); })
 
-        // Show the areas
-        svg
-            .selectAll("mylayers")
-            .data(stackedData)
-            .enter()
-            .append("path")
-            .attr("class", "myArea")
-            .style("fill", function(d) { return color(d.key); })
-            .attr("d", area)
-            .on("mouseover", mouseover)
-            .on("mousemove", mousemove)
-            .on("mouseleave", mouseleave)
+    // Show the areas
+    svg
+        .selectAll("mylayers")
+        .data(layers0)
+        .enter()
+        .append("path")
+        .attr("class", "myArea")
+        .style("fill", function(d) { return color(d.key); })
+        .attr("d", area)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
 
+}
+
+function transition() {
+    var t;
+    d3.selectAll("path").data((t= layers1, layers1 = layers0, layers0 = t)).transition().duration(2500).attr("d", area);
+}
+
+year = 2020;
+
+function changeYear(newYear) {
+    if (year === newYear) {
+        return
+    }
+    year = newYear
+    transition();
+}
+
+function start() {
+    loadPromise().then((res) => {
+        setUpGraph()
     })
 }
 
-inputFile="TestDaten2020.csv";
-
-function changeYear(year) {
-    inputFile=`TestDaten${year}.csv`;
-    console.log(inputFile);
-    drawGraph();
-}
-
-drawGraph();
+start()
