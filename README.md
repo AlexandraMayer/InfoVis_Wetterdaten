@@ -1,15 +1,16 @@
 # InfoVis Projekt Gruppe 10
-## Auswirkung der Infektionszahlen auf die Anzahl der Flugzeuge und damit auf die Genauigkeit von Wetterdaten
+## Auswirkung der Infektionszahlen auf die Anzahl der Flüge und damit auf die Genauigkeit von Wettervorhersagen
+
 
 ### Projektbeschreibung
 
-In einem Streamgraphen sollen die Infektionszahlen, Anzahl der (fliegende) Flugzeuge und die Genauigkeit der Wetterdaten angezeigt werden.
+In einem Streamgraphen sollen die Infektionszahlen, die Anzahl der (fliegenden) Flugzeuge und die Genauigkeit der Wettervorhersagen angezeigt werden.
 
 Must-haves:
-- Daten finden und aufbreiten
 - Streamgraph mit allen Daten
 - Legende
 - Tooltips für Streamgraphen
+- Jahreswechsel (2019, 2020)
 
 Nice-to-have:
 - Balkendiagramme für Fallzahlen
@@ -18,17 +19,18 @@ Nice-to-have:
 ### Roadmap
 
 Fertig & In-Review:
-- Ein Streamgraph mit Testdaten wird angezeig
+- Ein Streamgraph mit Daten der Corona-Positiven und Flugzahlen wird angezeigt (Testdaten für Wetterdaten)
+- Legende
 - Tooltip vorhanden 
+- Animierter Jahreswechsel
 - Dokumentation 
-- Jahreswechsel (2019, 2020)
 
 To Do:
-- Tooltip Text verbessern
-- Legende einfügen
-- Richtige Daten einfügen
-- Layout anpassen
-- Dynamischer Jahreswechsel
+- Legende verbessern
+- Richtige Wetterdaten einfügen
+- Layout verbessern
+- Testing
+- Bug fixing
 
 google docs:
 Präsentationsvorbereitungen: https://docs.google.com/document/d/1MX3wBYyD-8DUhYtaz3AhmgjJM-kpsJMKjZiNoAzAz-Y/edit
