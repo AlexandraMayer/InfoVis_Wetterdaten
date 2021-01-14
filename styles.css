@@ -115,3 +115,48 @@ header h2 {
  .middle .year-20 span:before {
 	 content: "\e074";
 }
+
+
+
+.legend {
+    border: 2px solid #007e90;
+    width: 275px;
+    padding: 5px;
+}
+
+.fas {
+    font-size: 1.2em;
+    font-family: "Font Awesome 5 Free";
+    color: white;
+}
+
+.weather {
+    border: 2px solid #95DF85;
+    background: #95DF85;
+    border-radius: 5px;
+    width: 250px;
+    margin: 5px;
+    padding: 5px;
+    color: white;
+}
+
+.flights {
+    border: 2px solid #997AC0;
+    background: #997AC0;
+    border-radius: 5px;
+    width: 250px;
+    margin: 5px;
+    padding: 5px;
+    color: white;
+}
+
+.corona {
+    border: 2px solid #7796BC;
+    background: #7796BC;
+    border-radius: 5px;
+    width: 250px;
+    margin: 5px;
+    padding: 5px;
+    color: white;
+}
+

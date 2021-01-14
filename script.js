@@ -187,16 +187,16 @@ function setUpGraph() {
         })
 
     // todo Legende verbessern
-    var legend = d3.select(".legend").append("svg")
+   /* var legend = d3.select(".legend").append("svg")
         .attr("width", 300)
         .attr("height", 120);
     legend.append("text").attr("x", 25).attr("y", 25).text("Legende").style("font-size", "20px").attr("alignment-baseline","middle")
-    legend.append("circle").attr("cx",30).attr("cy",45).attr("r", 6).style("fill", colorrange[2])
-    legend.append("text").attr("x", 50).attr("y", 50).text("Abweichung Wettervorhersage").style("font-size", "15px").attr("alignment-baseline","middle")
-    legend.append("circle").attr("cx",30).attr("cy",70).attr("r", 6).style("fill", colorrange[1])
-    legend.append("text").attr("x", 50).attr("y", 75).text("Anzahl Flüge Deutschland").style("font-size", "15px").attr("alignment-baseline","middle")
-    legend.append("circle").attr("cx",30).attr("cy",95).attr("r", 6).style("fill", colorrange[0])
-    legend.append("text").attr("x", 50).attr("y", 100).text("Gesamt Corona Positive").style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("circle").attr("cx",30).attr("cy",50).attr("r", 6).style("fill", colorrange[2])
+    legend.append("text").attr("x", 50).attr("y", 55).text("Abweichung Wettervorhersage")./*borderStyle("1px solid", colorrange[2]).style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("circle").attr("cx",30).attr("cy",75).attr("r", 6).style("fill", colorrange[1])
+    legend.append("text").attr("x", 50).attr("y", 80).text("Anzahl Flüge Deutschland").style("font-size", "15px").attr("alignment-baseline","middle")
+    legend.append("circle").attr("cx",30).attr("cy",100).attr("r", 6).style("fill", colorrange[0])
+    legend.append("text").attr("x", 50).attr("y", 105).text("Gesamt Corona Positive").style("font-size", "15px").attr("alignment-baseline","middle")*/
 
     var border = 100;
     var lineHeight = d3.select(".chart").node().getBoundingClientRect().height - border + "px";
