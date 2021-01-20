@@ -21,9 +21,9 @@ var svg = d3.select(".chart").append("svg")
 
 let loadPromise =  function loadData() {
     return new Promise((resolve) => {
-        d3.csv("TestDaten2020.csv", function (data) {
+        d3.csv("Daten2020.csv", function (data) {
             data2020 = data;
-            d3.csv("TestDaten2019.csv", function (data) {
+            d3.csv("Daten2019.csv", function (data) {
                 data2019 = data
                 resolve()
             })
@@ -58,7 +58,7 @@ var yAxis = d3.svg.axis()
     .ticks(0);
 
 var stack = d3.layout.stack()
-    .offset("wiggle")
+    .offset("silhouette")
     .values(function(d) { return d.values; })
     .x(function(d) { return d.date; })
     .y(function(d) { return d.normvalue; });
