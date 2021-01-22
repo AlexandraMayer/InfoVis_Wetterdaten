@@ -12,6 +12,7 @@ var format = d3.time.format("%m/%d/%y");
 var margin = {top: 40, right: 40, bottom: 30, left: 30};
 var width = document.body.clientWidth - margin.left - margin.right;
 var height = 450 - margin.top - margin.bottom;
+var spaceBottomY = 10;
 
 var svg = d3.select(".chart").append("svg")
     .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height+ margin.top + margin.bottom}`)
@@ -42,7 +43,7 @@ var x = d3.time.scale()
     .range([0, width]);
 
 var y = d3.scale.linear()
-    .range([height-10, 0]);
+    .range([height - spaceBottomY, 0]);
 
 var z = d3.scale.ordinal()
     .range(colorrange);
@@ -186,20 +187,7 @@ function setUpGraph() {
             tooltip.style("visibility", "hidden");
         })
 
-    // todo Legende verbessern
-   /* var legend = d3.select(".legend").append("svg")
-        .attr("width", 300)
-        .attr("height", 120);
-    legend.append("text").attr("x", 25).attr("y", 25).text("Legende").style("font-size", "20px").attr("alignment-baseline","middle")
-    legend.append("circle").attr("cx",30).attr("cy",50).attr("r", 6).style("fill", colorrange[2])
-    legend.append("text").attr("x", 50).attr("y", 55).text("Abweichung Wettervorhersage")./*borderStyle("1px solid", colorrange[2]).style("font-size", "15px").attr("alignment-baseline","middle")
-    legend.append("circle").attr("cx",30).attr("cy",75).attr("r", 6).style("fill", colorrange[1])
-    legend.append("text").attr("x", 50).attr("y", 80).text("Anzahl Flüge Deutschland").style("font-size", "15px").attr("alignment-baseline","middle")
-    legend.append("circle").attr("cx",30).attr("cy",100).attr("r", 6).style("fill", colorrange[0])
-    legend.append("text").attr("x", 50).attr("y", 105).text("Gesamt Corona Positive").style("font-size", "15px").attr("alignment-baseline","middle")*/
-
-    var border = 100;
-    var lineHeight = d3.select(".chart").node().getBoundingClientRect().height - border + "px";
+    var lineHeight = height - spaceBottomY + "px";
     var lineTop = d3.select(".chart").node().offsetTop + margin.top + "px";
     var lineBottom = d3.select(".chart").node().getBoundingClientRect().bottom  + "px";
     var lineLeft = d3.select(".chart").node().getBoundingClientRect().left  + "px";
