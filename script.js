@@ -222,10 +222,12 @@ function setUpGraph() {
 
 function transition() {
     if (year === 2019) {
+        d3.select(".corona").style("opacity", 0)
         x.domain(d3.extent(data2019, function (d) {
             return d.date;
         }));
     } else if (year === 2020) {
+        d3.select(".corona").style("opacity", 1)
         x.domain(d3.extent(data2020, function (d) {
             return d.date;
         }));
