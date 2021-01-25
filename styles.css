@@ -1,0 +1,162 @@
+/*Schrift Button*/
+label {
+    font-size: 16px;
+}
+
+/*Achsenbeschriftung*/
+body {
+    font: 16px sans-serif;
+}
+
+/*Hintergrund Chart*/
+.chart {
+    background: #fff;
+}
+
+p {
+    font: 12px helvetica;
+}
+
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 2px;
+    shape-rendering: crispEdges;
+}
+
+button {
+    position: absolute;
+    right: 50px;
+    top: 10px;
+}
+
+ header {
+    height: 4rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    font-size: 1.5rem;
+    padding: 1rem;
+    color: #fff;
+    background-color:  #007e90;
+    box-shadow:
+      0 1px 2px rgba(0, 0, 0, .18),
+      0 2px 4px rgba(0, 0, 0, .12),
+      0 3px 8px rgba(0, 0, 0, .06);
+  }
+
+
+header h2 {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.middle {
+	 padding: 20px;
+	 text-align: center;
+}
+ .middle input[type="radio"] {
+	 display: none;
+}
+ .middle input[type="radio"]:checked + .box {
+	 background-color: #007e90;
+}
+ .middle input[type="radio"]:checked + .box span {
+	 color: white;
+	 transform: translateY(70px);
+}
+ .middle input[type="radio"]:checked + .box span:before {
+	 transform: translateY(0px);
+	 opacity: 1;
+}
+ .middle .box {
+	 width: 150px;
+	 height: 150px;
+     border: 1px solid  #007e90;
+	 background-color: #fff;
+	 transition: all 250ms ease;
+	 will-change: transition;
+	 display: inline-block;
+	 text-align: center;
+	 cursor: pointer;
+	 position: relative;
+	 font-weight: 900;
+}
+/* move box by click down*/
+ .middle .box:active {
+	 transform: translateY(10px);
+}
+ .middle .box span {
+	 position: absolute;
+	 transform: translate(0, 30px);
+	 left: 0;
+	 right: 0;
+	 transition: all 300ms ease;
+	 font-size: 1.5em;
+	 user-select: none;
+	 color: #007e90;
+}
+ .middle .box span:before {
+	 font-size: 1.2em;
+	 font-family: "Font Awesome 5 Free";
+	 display: block;
+	 transform: translateY(-80px);
+	 opacity: 0;
+	 transition: all 300ms ease-in-out;
+	 font-weight: 900;
+	 color: white;
+}
+
+.middle .year-19 span:before {
+    content: "\f072";
+}
+ .middle .year-20 span:before {
+	 content: "\e074";
+}
+
+
+
+.legend {
+    border: 2px solid #007e90;
+    width: 275px;
+    padding: 5px;
+}
+
+.fas {
+    font-size: 1.2em;
+    font-family: "Font Awesome 5 Free";
+    color: white;
+}
+
+.weather {
+    border: 2px solid #95DF85;
+    background: #95DF85;
+    border-radius: 5px;
+    width: 250px;
+    margin: 5px;
+    padding: 5px;
+    color: white;
+}
+
+.flights {
+    border: 2px solid #997AC0;
+    background: #997AC0;
+    border-radius: 5px;
+    width: 250px;
+    margin: 5px;
+    padding: 5px;
+    color: white;
+}
+
+.corona {
+    border: 2px solid #7796BC;
+    background: #7796BC;
+    border-radius: 5px;
+    width: 250px;
+    margin: 5px;
+    padding: 5px;
+    color: white;
+}
+
