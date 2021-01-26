@@ -20,15 +20,27 @@ var svg = d3.select(".chart").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 // todo fix responsive for axis
 
+/**
+ * Daten aus Dateien zu Laden. In Promise, damit der Graph erst gezeichnet wird, wenn die Daten geladen sind.
+ * @returns {Promise}
+ */
 let loadPromise =  function loadData() {
-    return new Promise((resolve) => {
-        d3.csv("Daten2020.csv", function (data) {
-            data2020 = data;
-            d3.csv("Daten2019.csv", function (data) {
-                data2019 = data
-                resolve()
+    return new Promise((resolve, reject) => {
+        try {
+            d3.csv("Daten2020.csv", function (data) {
+                data2020 = data;
+                try {
+                    d3.csv("Daten2019.csv", function (data) {
+                        data2019 = data;
+                        resolve()
+                    })
+                } catch (error) {
+                    reject(error);
+                }
             })
-        })
+        } catch (error) {
+            reject(error);
+        }
     });
 }
 
@@ -73,8 +85,12 @@ var area = d3.svg.area()
     .y0(function(d) { return y(d.y0); })
     .y1(function(d) { return y(d.y0 + d.y); });
 
+/**
+ * Funktion, die den Graphen erstellt. Wird nur einmal ganz am Anfang aufgerufen (bei Wechsel nur noch tranisiton)
+ */
 function setUpGraph() {
 
+    // Je nach dem welches Jahr zu Beginn gesetzt wurde (siehe Anfang Datei), Daten in Array laden und Button auswählen.
     var data = []
     if (year === 2020) {
         document.getElementById("btn20").checked = true;
@@ -84,6 +100,7 @@ function setUpGraph() {
         data = data2019
     }
 
+    // Daten für 2019 und 2020 verarbeiten
     data2019.forEach(function (d) {
         d.date = format.parse(d.date);
         d.normvalue = +d.normvalue;
@@ -93,9 +110,11 @@ function setUpGraph() {
         d.normvalue = +d.normvalue;
     });
 
+    // Stacked layers für Streamgraph für 2019 und 2020 erstellen)
     layers0 = stack(nest.entries(data2020));
     layers1 = stack(nest.entries(data2019));
 
+    // layers tauschen wenn 2019 als erstes ausgewählt ist
     if(year === 2019) {
         var t = layers0
         layers0 = layers1
@@ -130,13 +149,14 @@ function setUpGraph() {
     svg.selectAll(".layer")
         .attr("opacity", 1)
         .on("mouseover", function(d, i) {
-            svg.selectAll(".layer").transition()
+            svg.selectAll(".layer")
+                .transition(name = "mouseoverOpacity")
                 .duration(250)
                 .attr("opacity", function(d, j) {
-                    return j != i ? 0.6 : 1;
+                    return j !== i ? 0.6 : 1;
                 })})
 
-        .on("mousemove", function(d, i) {
+        .on("mousemove", function(d) {
             mouse = d3.mouse(this);
             mouseX = mouse[0];
             var invertedx = x.invert(mouseX);
@@ -190,9 +210,9 @@ function setUpGraph() {
                 .style("top", mouseDocumentY - 40 + "px")
                 .style("visibility", "visible");
         })
-        .on("mouseout", function(d, i) {
+        .on("mouseout", function() {
             svg.selectAll(".layer")
-                .transition()
+                .transition(name = "mouseoutOpacity")
                 .duration(250)
                 .attr("opacity", "1");
             d3.select(this)
@@ -233,6 +253,9 @@ function setUpGraph() {
         });
 }
 
+/**
+ * Übergang zwischen den Jahren animieren
+ */
 function transition() {
     if (year === 2019) {
         d3.select(".corona").style("opacity", 0)
@@ -245,26 +268,42 @@ function transition() {
             return d.date;
         }));
     }
+    // Layers austauschen und Übergang animieren
     var t;
     d3.selectAll("path")
-        .data((t= layers1, layers1 = layers0, layers0 = t))
-        .transition()
+        .data((t= layers1,
+        layers1 = layers0,
+        layers0 = t))
+        .transition(name = "changeLayers")
         .duration(1500)
         .attr("d", function(d) { return area(d.values);});
 }
 
+/**
+ * Funktion, die aufgerufen wird, wenn einer der Jahreszahlenbuttons geklickt wurde. Animation des Übergangs wird
+ * aufgerufen, wenn sich das Jahr verändert hat.
+ *
+ * @param newYear: das Jahr, das zu dem Button gehört der geklickt wurde.
+ */
 function changeYear(newYear) {
     if (year === newYear) {
-        return
+        return;
     }
-    year = newYear
+    year = newYear;
     transition();
 }
 
+/**
+ * Funktion zur Erstellung des Graphen. Zuerst werde Daten geladen, wenn diese Promise resolved ist, wird der Graph
+ * erstellt.
+ */
 function start() {
     loadPromise().then(() => {
         setUpGraph()
+    }).catch((reason) => {
+        console.error("Something went wrong while loading the Data: " + reason)
     })
 }
 
-start()
+//Erstellen des Graphen
+start();
