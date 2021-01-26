@@ -28,6 +28,10 @@ p {
     text-align: center;
 }
 
+.space{
+    padding-bottom: 4em;
+}
+
 .axis path, .axis line {
     fill: none;
     stroke: #000;
