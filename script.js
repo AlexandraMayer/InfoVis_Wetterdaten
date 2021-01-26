@@ -8,6 +8,32 @@ var layers0;
 var layers1;
 
 var format = d3.time.format("%m/%d/%y");
+var germanFormatters =  d3.locale({
+    "decimal": ",",
+    "thousands": ".",
+    "grouping": [3],
+    "currency": ["€", ""],
+    "dateTime": "%a %b %e %X %Y",
+    "date": "%d.%m.%Y",
+    "time": "%H:%M:%S",
+    "periods": ["AM", "PM"],
+    "days": ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+    "shortDays": ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+    "months": ["Jannuar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+    "shortMonths": ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+});
+
+var customTimeFormat = germanFormatters.timeFormat.multi([
+    [".%L", function(d) { return d.getMilliseconds(); }],
+    [":%S", function(d) { return d.getSeconds(); }],
+    ["%I:%M", function(d) { return d.getMinutes(); }],
+    ["%Hh", function(d) { return d.getHours(); }],
+    ["%a %d", function(d) { return d.getDay() && d.getDate() != 1; }],
+    ["%b %d", function(d) { return d.getDate() != 1; }],
+    ["%B", function(d) { return d.getMonth(); }],
+    ["%Y", function() { return true; }]
+]); ;
+
 
 var margin = {top: 40, right: 40, bottom: 30, left: 30};
 var width = document.body.clientWidth - margin.left - margin.right;
@@ -52,7 +78,9 @@ var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
     .ticks(12)
-    .tickFormat(d3.time.format("%B"));
+    .tickFormat(customTimeFormat);
+
+
 
 var yAxis = d3.svg.axis()
     .scale(y)
