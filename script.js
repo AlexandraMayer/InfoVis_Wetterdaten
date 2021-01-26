@@ -170,8 +170,22 @@ function setUpGraph() {
                 .classed("hover", true)
                 .attr("stroke", strokecolor)
                 .attr("stroke-width", "0.5px")
+
+            let tooltipValueData;
+            let tooltipBorderColor;
+            if (d.key === "Gesamt Corona Positive") {
+                tooltipValueData = valueData + " Personen";
+                tooltipBorderColor = colorrange[0];
+            } else if (d.key === "Anzahl Flüge Deutschland") {
+                tooltipValueData = valueData + " Flüge";
+                tooltipBorderColor = colorrange[1];
+            } else if (d.key === "Abweichung Wettervorhersage") {
+                tooltipValueData = valueData + " °C";
+                tooltipBorderColor = colorrange[2];
+            }
             tooltip
-                .html("<div style='font-size:16px; border-width: 1px; border-radius:10px; border-color:gray; background-color:white; opacity:0.9; border-style:solid; width:" + tooltipWidth + "px'>" + "&nbsp;" + d.key + "<br>&nbsp;" + valueData + "</div>")
+                .html("<div class='tooltipBox' style='width:" + tooltipWidth + "px; border-color:" + tooltipBorderColor
+                    + "'> &nbsp;" + d.key + "<br>&nbsp;" + tooltipValueData + "</div>")
                 .style("left", tooltipBoxLeft + "px")
                 .style("top", mouseDocumentY - 40 + "px")
                 .style("visibility", "visible");
@@ -187,7 +201,7 @@ function setUpGraph() {
             tooltip.style("visibility", "hidden");
         })
 
-    var lineHeight = height - spaceBottomY + "px";
+    var lineHeight = height + "px";
     var lineTop = d3.select(".chart").node().offsetTop + margin.top + "px";
     var lineBottom = d3.select(".chart").node().getBoundingClientRect().bottom  + "px";
     var lineLeft = d3.select(".chart").node().getBoundingClientRect().left  + "px";
@@ -201,19 +215,18 @@ function setUpGraph() {
         .style("top", lineTop)
         .style("bottom", lineBottom)
         .style("left", lineLeft)
-        .style("background", "#ffffff")
+        .style("background", "#007e90")
         .style("visibility", "hidden");
 
     d3.select(".chart")
         .on("mousemove", function(){
             mouse = d3.mouse(this);
             mouseX = mouse[0] + 5;
-            vertical.style("left", mouseX + "px" ).style("visibility", "visible");
-        })
-        .on("mouseover", function(){
-            mouse = d3.mouse(this);
-            mouseX = mouse[0] + 5;
-            vertical.style("left", mouseX + "px").style("visibility", "visible");
+            if (mouseX < margin.left + 9 || mouseX > width + margin.right - 5) {
+                vertical.style("visibility", "hidden");
+            } else {
+                vertical.style("left", mouseX + "px" ).style("visibility", "visible");
+            }
         })
         .on("mouseout", function (){
             vertical.style("visibility", "hidden");
