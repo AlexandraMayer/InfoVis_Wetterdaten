@@ -52,7 +52,7 @@ https://www.dfs.de/dfs_homepage/de/Unternehmen/Zahlen%20und%20Daten/Statistiken/
 - Wettervorhersagen<br>
 Frei abrufbare Daten des European centre of Medium-Range Weather Forecasts ais dem era5 Datensatz
 https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5
-genauer aus dem stündliche Daten nach Luftdruck:
+genauer aus den stündliche Daten nach Luftdruck:
 https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-pressure-levels-preliminary-back-extension?tab=form
 
 - gemessene Wetterdaten<br>
