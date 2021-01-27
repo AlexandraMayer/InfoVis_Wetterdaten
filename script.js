@@ -162,7 +162,10 @@ function setUpGraph() {
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
+        .call(xAxis)
+        .selectAll(".tick text")
+        .style("text-anchor", "center")
+        .attr("x",width/24);
 
     svg.append("g")
         .attr("class", "y axis")
@@ -269,7 +272,7 @@ function setUpGraph() {
         .on("mousemove", function(){
             mouse = d3.mouse(this);
             mouseX = mouse[0] + 5;
-            if (mouseX < margin.left + 9 || mouseX > width + margin.right - 5) {
+            if (mouseX < margin.left + 9 || mouseX > width + margin.right - 22) {
                 vertical.style("visibility", "hidden");
             } else {
                 vertical.style("left", mouseX + "px" ).style("visibility", "visible");
