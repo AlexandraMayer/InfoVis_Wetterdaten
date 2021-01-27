@@ -20,7 +20,6 @@ var svg = d3.select(".chart").append("svg")
     .attr("viewBox", `0 0 ${width + margin.left + margin.right} ${height+ margin.top + margin.bottom}`)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-// todo fix responsive for axis
 
 /**
  * Daten aus Dateien zu Laden. In Promise, damit der Graph erst gezeichnet wird, wenn die Daten geladen sind.
@@ -186,6 +185,7 @@ function setUpGraph() {
                     return j !== i ? 0.6 : 1;
                 })})
 
+        // Anzeige Tooltip bei Maus auf dem Graph
         .on("mousemove", function(d) {
             mouse = d3.mouse(this);
             mouseX = mouse[0];
@@ -195,6 +195,7 @@ function setUpGraph() {
                 datearray[k] = selected[k].date
             }
 
+            // Berechnung nächstes Datum im Datensatz zur Position der Maus
             let differences = [];
             datearray.forEach(function(d) {
                 differences.push(Math.abs(invertedx.getTime() - d.getTime()));
@@ -204,6 +205,7 @@ function setUpGraph() {
             mousedate = datearray[indexClosest];
             valueData = d.values[indexClosest].value;
 
+            // Position des Tooltips
             let mouseDocument = d3.mouse(document.getElementById("document"));
             let mouseDocumentX = mouseDocument[0];
             let mouseDocumentY = mouseDocument[1];
@@ -221,6 +223,7 @@ function setUpGraph() {
                 .attr("stroke", strokecolor)
                 .attr("stroke-width", "0.5px")
 
+            // Inhalt des Tooltips
             let tooltipValueData;
             let tooltipBorderColor;
             if (d.key === "Gesamt Corona Positive") {
@@ -248,9 +251,11 @@ function setUpGraph() {
             d3.select(this)
                 .classed("hover", false)
                 .attr("stroke-width", "0px")
+            // Keine Anzeige des Tooltips, wenn Maus nicht auf Graph
             tooltip.style("visibility", "hidden");
         })
 
+    // Vertikale Linie bei Maus auf dem Graph
     var lineHeight = height + "px";
     var lineTop = d3.select(".chart").node().offsetTop + margin.top + "px";
     var lineBottom = d3.select(".chart").node().getBoundingClientRect().bottom  + "px";
@@ -268,6 +273,7 @@ function setUpGraph() {
         .style("background", "#007e90")
         .style("visibility", "hidden");
 
+    // Position der vertikalen Linie
     d3.select(".chart")
         .on("mousemove", function(){
             mouse = d3.mouse(this);
@@ -278,6 +284,7 @@ function setUpGraph() {
                 vertical.style("left", mouseX + "px" ).style("visibility", "visible");
             }
         })
+        // keine vertikale Linie, wenn Maus nicht auf Graph
         .on("mouseout", function (){
             vertical.style("visibility", "hidden");
         });
