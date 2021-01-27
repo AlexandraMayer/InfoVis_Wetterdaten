@@ -129,9 +129,12 @@ header h2 {
 
 
 .legend {
-    border: 2px solid #007e90;
-    width: 275px;
+    border: 2px solid white;
+    height: 150px;
     padding: 5px;
+    //margin-bottom: 2%;
+    //margin-right: 30%;
+    //margin-left: 2%;
 }
 
 .fas {
@@ -141,32 +144,42 @@ header h2 {
 }
 
 .weather {
+    padding: 5px;
+    margin: 2%;
+    width: 25%;
+    height: 65%;
+    float: left;
     border: 2px solid #95DF85;
     background: #95DF85;
     border-radius: 5px;
-    width: 250px;
-    margin: 5px;
-    padding: 5px;
     color: white;
 }
 
 .flights {
+    padding: 5px;
+    width: 25%;
+    margin-bottom: 2%;
+    margin-top: 2%;
+    margin-right: 2%;
+    height: 65%;
+    float: left;
     border: 2px solid #997AC0;
     background: #997AC0;
     border-radius: 5px;
-    width: 250px;
-    margin: 5px;
-    padding: 5px;
     color: white;
 }
 
 .corona {
+    padding: 5px;
+    margin-bottom: 100px;
+    margin-right: 2%;
+    margin-top: 2%;
+    width: 25%;
+    height: 65%;
+    float: left;
     border: 2px solid #7796BC;
     background: #7796BC;
     border-radius: 5px;
-    width: 250px;
-    margin: 5px;
-    padding: 5px;
     color: white;
 }
 
