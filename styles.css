@@ -23,7 +23,7 @@ p {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #007e90;
+    background-color: #018786;
     color: white;
     text-align: center;
 }
@@ -50,7 +50,7 @@ button {
     font-size: 1.5rem;
     padding: 1rem;
     color: #fff;
-    background-color:  #007e90;
+     background-color: #018786;
     box-shadow:
       0 1px 2px rgba(0, 0, 0, .18),
       0 2px 4px rgba(0, 0, 0, .12),
@@ -71,7 +71,7 @@ header h2 {
 	 display: none;
 }
  .middle input[type="radio"]:checked + .box {
-	 background-color: #007e90;
+     background-color: #018786;
 }
  .middle input[type="radio"]:checked + .box span {
 	 color: white;
@@ -84,7 +84,7 @@ header h2 {
  .middle .box {
 	 width: 150px;
 	 height: 150px;
-     border: 1px solid  #007e90;
+     border: 1px solid  #018786;
 	 background-color: #fff;
 	 transition: all 250ms ease;
 	 will-change: transition;
@@ -106,7 +106,7 @@ header h2 {
 	 transition: all 300ms ease;
 	 font-size: 1.5em;
 	 user-select: none;
-	 color: #007e90;
+     color: #018786;
 }
  .middle .box span:before {
 	 font-size: 1.2em;
@@ -149,8 +149,8 @@ header h2 {
     width: 25%;
     height: 65%;
     float: left;
-    border: 2px solid #95DF85;
-    background: #95DF85;
+    border: 2px solid #B00020;
+    background: #B00020;
     border-radius: 5px;
     color: white;
 }
@@ -163,8 +163,8 @@ header h2 {
     margin-right: 2%;
     height: 65%;
     float: left;
-    border: 2px solid #997AC0;
-    background: #997AC0;
+    border: 2px solid #3700B3;
+    background: #3700B3;
     border-radius: 5px;
     color: white;
 }
@@ -177,8 +177,8 @@ header h2 {
     width: 25%;
     height: 65%;
     float: left;
-    border: 2px solid #7796BC;
-    background: #7796BC;
+    border: 2px solid #03DAC6;
+    background: #03DAC6;
     border-radius: 5px;
     color: white;
 }
