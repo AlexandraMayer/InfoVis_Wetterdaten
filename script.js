@@ -1,5 +1,6 @@
 var datearray = [];
-colorrange = ["#7796BC", "#997AC0", "#95DF85"];
+//colorrange = ["#7796BC", "#997AC0", "#95DF85"];
+colorrange = ["#03DAC6", "#3700B3", "#B00020"];
 strokecolor = colorrange[0];
 
 year = 2020;
