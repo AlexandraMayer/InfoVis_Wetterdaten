@@ -26,6 +26,7 @@ p {
     background-color: #018786;
     color: white;
     text-align: center;
+    font-weight: 900;
 }
 
 .axis path, .axis line {
@@ -92,7 +93,7 @@ header h2 {
 	 text-align: center;
 	 cursor: pointer;
 	 position: relative;
-	 font-weight: 900;
+	 font-weight: bold;
 }
 /* move box by click down*/
  .middle .box:active {
@@ -189,4 +190,31 @@ header h2 {
     border-radius: 7px;
     background: rgba(255, 255, 255, 0.6);
     border-style: groove;
+}
+
+
+a {
+    outline: none;
+    text-decoration: none;
+    padding: 2px 1px 0;
+    font-weight: normal;
+}
+
+a:link {
+    color:  white;
+}
+
+a:visited {
+    color:  white;
+}
+
+a:hover {
+    border-bottom: 1px solid;
+    background: white;
+    color:  #018786;
+}
+
+li{
+    display: inline;
+    margin: 10px;
 }
