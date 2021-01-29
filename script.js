@@ -5,6 +5,7 @@ strokecolor = colorrange[0];
 
 year = 2020;
 
+// Dictionary für die Funktionen setUpLineGraph und transitionLineGraph
 const lineCharts = {Wetter : {name: "Abweichung Wettervorhersage",
         chartName: ".lineChartWeather",
         color : colorrange[2],
@@ -51,11 +52,9 @@ let loadPromise =  function loadData() {
         try {
             d3.csv("Daten2020.csv", function (data) {
                 data2020 = data;
-                console.log(data2020)
                 try {
                     d3.csv("Daten2019.csv", function (data) {
                         data2019 = data;
-                        console.log(data2019)
                         resolve()
                     })
                 } catch (error) {
@@ -68,6 +67,9 @@ let loadPromise =  function loadData() {
     });
 }
 
+/**
+ * Daten für Graphen verarbeiten
+ */
 function setUpData() {
 
     // Daten für 2019 und 2020 verarbeiten
@@ -167,7 +169,6 @@ var area = d3.svg.area()
     .x(function(d) { return x(d.date); })
     .y0(function(d) { return y(d.y0); })
     .y1(function(d) { return y(d.y0 + d.y); });
-
 
 /**
  * Funktion, die den Graphen erstellt. Wird nur einmal ganz am Anfang aufgerufen (bei Wechsel nur noch tranisiton)
@@ -328,21 +329,6 @@ function setUpGraph() {
         });
 }
 
-
-/**
- * Funktion, die aufgerufen wird, wenn einer der Jahreszahlenbuttons geklickt wurde. Animation des Übergangs wird
- * aufgerufen, wenn sich das Jahr verändert hat.
- *
- * @param newYear: das Jahr, das zu dem Button gehört der geklickt wurde.
- */
-function changeYear(newYear) {
-    if (year === newYear) {
-        return;
-    }
-    year = newYear;
-    transition();
-}
-
 const marginLineChart = {top: 40, right: 20, bottom: 70, left: 70},
     widthLineChart = document.body.clientWidth - marginLineChart.left - marginLineChart.right,
     heightLineChart = 275 - marginLineChart.top - marginLineChart.bottom;
@@ -360,9 +346,15 @@ var valueline = d3.svg.line()
     .x(function (d) { return xLineChart(d.date) })
     .y(function (d) { return yLineChart(d.value)});
 
-function setUpLineChart(type, data) {
+/**
+ * Funktion um die Liniendiagramme zu erstellen
+ *
+ * @param dicForGraph Dictionary mit den für diesen Graphen wichtigen Parameter
+ * @param data Daten für diesen Graphen
+ */
+function setUpLineChart(dicForGraph, data) {
 
-    var svg = d3.select(type.chartName)
+    var svg = d3.select(dicForGraph.chartName)
         .append("svg")
         .attr("width", widthLineChart + marginLineChart.left + marginLineChart.right)
         .attr("height", heightLineChart + marginLineChart.top + marginLineChart.bottom)
@@ -376,7 +368,7 @@ function setUpLineChart(type, data) {
     svg.append("path")
         .attr("fill", "none")
         .attr("stroke-width", 2)
-        .attr("stroke", type.color)
+        .attr("stroke", dicForGraph.color)
         .attr("class", "line")
         .attr("d", valueline(data))
 
@@ -397,15 +389,32 @@ function setUpLineChart(type, data) {
         .attr("y", -18.5)
         .attr("dy", "0.71em")
         .attr("text-anchor", "middle")
-        .text(type.yAxisLabel);
+        .text(dicForGraph.yAxisLabel);
 
     svg.append("text")
         .attr("x", widthLineChart/2)
         .attr("y", 0 - (marginLineChart.top / 2))
         .attr("text-anchor", "middle")
-        .text(type.name)
+        .text(dicForGraph.name)
 }
 
+/**
+ * Funktion, die aufgerufen wird, wenn einer der Jahreszahlenbuttons geklickt wurde. Animation des Übergangs wird
+ * aufgerufen, wenn sich das Jahr verändert hat.
+ *
+ * @param newYear: das Jahr, das zu dem Button gehört der geklickt wurde.
+ */
+function changeYear(newYear) {
+    if (year === newYear) {
+        return;
+    }
+    year = newYear;
+    transition();
+}
+
+/**
+ * Animation des Jahreswechsel für den Streamgraphen
+ */
 function transitionStreamGraph() {
     // Layers austauschen und Übergang animieren
     let t;
@@ -418,16 +427,22 @@ function transitionStreamGraph() {
         .attr("d", function(d) { return area(d.values);});
 }
 
-function transitionLineChart(lineChartDic, data) {
+/**
+ * Funktion für die Animation des Jahreswechsel für Liniendiagramme
+ *
+ * @param dicForGraph Dictionary mit den für diesen Graphen wichtigen Parametern
+ * @param data Daten für diesen Graphen
+ */
+function transitionLineChart(dicForGraph, data) {
 
     xLineChart.domain(d3.extent(data, function (d) { return d.date; }))
     yLineChart.domain([0, d3.max(data, function(d) { return d.value;  }) ]);
 
-    d3.select(lineChartDic.chartName).selectAll(".line")
+    d3.select(dicForGraph.chartName).selectAll(".line")
         .transition(name= "changeLine")
         .duration(1500)
         .attr("d", valueline(data))
-    d3.select(lineChartDic.chartName).selectAll(".y.axis")
+    d3.select(dicForGraph.chartName).selectAll(".y.axis")
         .transition()
         .duration(1500)
         .call(yAxisLineChart)
@@ -437,6 +452,7 @@ function transitionLineChart(lineChartDic, data) {
  * Übergang zwischen den Jahren animieren
  */
 function transition() {
+
     if (year === 2019) {
         d3.select(".corona").style("opacity", 0)
         x.domain(d3.extent(data2019, function (d) {
@@ -470,6 +486,9 @@ function transition() {
     transitionLineChart(lineCharts.Corona, dataCorona)
 }
 
+/**
+ * Daten verarbeiten und Graphen erstellen
+ */
 function setUp() {
     setUpData()
     setUpGraph()
@@ -488,5 +507,5 @@ function start() {
     })
 }
 
-//Erstellen des Graphen
+//Erstellen der Graphen
 start();
