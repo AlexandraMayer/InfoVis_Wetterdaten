@@ -5,6 +5,27 @@ strokecolor = colorrange[0];
 
 year = 2020;
 
+const lineCharts = {Wetter : {name: "Abweichung Wettervorhersage",
+        chartName: ".lineChartWeather",
+        color : colorrange[2],
+        yAxisLabel: "Temperatur (°C)"},
+    Fluege: {name: "Anzahl Flüge Deutschland",
+        chartName : ".lineChartFlights",
+        color: colorrange[1],
+        yAxisLabel: "Flüge"},
+    Corona: {name: "Gesamt Corona Positive",
+        chartName: ".lineChartCorona",
+        color: colorrange[0],
+        yAxisLabel: "Corona Positive"}}
+
+let data;
+let dataWetter;
+let dataWetter1;
+let dataFluege;
+let dataFluege1;
+let dataCorona;
+let dataCorona1;
+
 var layers0;
 var layers1;
 
@@ -30,9 +51,11 @@ let loadPromise =  function loadData() {
         try {
             d3.csv("Daten2020.csv", function (data) {
                 data2020 = data;
+                console.log(data2020)
                 try {
                     d3.csv("Daten2019.csv", function (data) {
                         data2019 = data;
+                        console.log(data2019)
                         resolve()
                     })
                 } catch (error) {
@@ -43,6 +66,40 @@ let loadPromise =  function loadData() {
             reject(error);
         }
     });
+}
+
+function setUpData() {
+
+    // Daten für 2019 und 2020 verarbeiten
+    data2019.forEach(function (d) {
+        d.date = format.parse(d.date);
+        d.normvalue = +d.normvalue;
+        d.value = +d.value
+    });
+    data2020.forEach(function (d) {
+        d.date = format.parse(d.date);
+        d.normvalue = +d.normvalue;
+        d.value = +d.value
+    });
+
+    // Je nach dem welches Jahr zu Beginn gesetzt wurde (siehe Anfang Datei), Daten in Array laden und Button auswählen.
+    var data1
+    if (year === 2020) {
+        document.getElementById("btn20").checked = true;
+        data = data2020
+        data1 = data2019
+    } else if (year === 2019) {
+        document.getElementById("btn19").checked = true;
+        data = data2019
+        data1 = data2020
+    }
+
+    dataWetter = data.filter(d => d.key === "Abweichung Wettervorhersage")
+    dataWetter1 = data1.filter(d => d.key === "Abweichung Wettervorhersage")
+    dataFluege = data.filter(d => d.key === "Anzahl Flüge Deutschland")
+    dataFluege1 = data1.filter(d => d.key === "Anzahl Flüge Deutschland")
+    dataCorona = data.filter(d => d.key === "Gesamt Corona Positive")
+    dataCorona1 = data1.filter(d => d.key === "Gesamt Corona Positive")
 }
 
 var tooltip = d3.select("body")
@@ -111,30 +168,11 @@ var area = d3.svg.area()
     .y0(function(d) { return y(d.y0); })
     .y1(function(d) { return y(d.y0 + d.y); });
 
+
 /**
  * Funktion, die den Graphen erstellt. Wird nur einmal ganz am Anfang aufgerufen (bei Wechsel nur noch tranisiton)
  */
 function setUpGraph() {
-
-    // Je nach dem welches Jahr zu Beginn gesetzt wurde (siehe Anfang Datei), Daten in Array laden und Button auswählen.
-    var data = []
-    if (year === 2020) {
-        document.getElementById("btn20").checked = true;
-        data = data2020
-    } else if (year === 2019) {
-        document.getElementById("btn19").checked = true;
-        data = data2019
-    }
-
-    // Daten für 2019 und 2020 verarbeiten
-    data2019.forEach(function (d) {
-        d.date = format.parse(d.date);
-        d.normvalue = +d.normvalue;
-    });
-    data2020.forEach(function (d) {
-        d.date = format.parse(d.date);
-        d.normvalue = +d.normvalue;
-    });
 
     // Stacked layers für Streamgraph für 2019 und 2020 erstellen)
     layers0 = stack(nest.entries(data2020));
@@ -290,31 +328,6 @@ function setUpGraph() {
         });
 }
 
-/**
- * Übergang zwischen den Jahren animieren
- */
-function transition() {
-    if (year === 2019) {
-        d3.select(".corona").style("opacity", 0)
-        x.domain(d3.extent(data2019, function (d) {
-            return d.date;
-        }));
-    } else if (year === 2020) {
-        d3.select(".corona").style("opacity", 1)
-        x.domain(d3.extent(data2020, function (d) {
-            return d.date;
-        }));
-    }
-    // Layers austauschen und Übergang animieren
-    var t;
-    d3.selectAll("path")
-        .data((t= layers1,
-        layers1 = layers0,
-        layers0 = t))
-        .transition(name = "changeLayers")
-        .duration(1500)
-        .attr("d", function(d) { return area(d.values);});
-}
 
 /**
  * Funktion, die aufgerufen wird, wenn einer der Jahreszahlenbuttons geklickt wurde. Animation des Übergangs wird
@@ -330,15 +343,148 @@ function changeYear(newYear) {
     transition();
 }
 
+const marginLineChart = {top: 40, right: 20, bottom: 70, left: 70},
+    widthLineChart = document.body.clientWidth - marginLineChart.left - marginLineChart.right,
+    heightLineChart = 275 - marginLineChart.top - marginLineChart.bottom;
+
+var xLineChart = d3.time.scale().range([0, widthLineChart]);
+var yLineChart = d3.scale.linear().range([heightLineChart, 0]);
+
+var xAxisLineChart = d3.svg.axis().scale(xLineChart)
+    .orient("bottom").tickFormat(customTimeFormat);
+
+var yAxisLineChart = d3.svg.axis().scale(yLineChart)
+    .orient("left");
+
+var valueline = d3.svg.line()
+    .x(function (d) { return xLineChart(d.date) })
+    .y(function (d) { return yLineChart(d.value)});
+
+function setUpLineChart(type, data) {
+
+    var svg = d3.select(type.chartName)
+        .append("svg")
+        .attr("width", widthLineChart + marginLineChart.left + marginLineChart.right)
+        .attr("height", heightLineChart + marginLineChart.top + marginLineChart.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + marginLineChart.left + "," + marginLineChart.top + ")");
+
+    xLineChart.domain(d3.extent(data, function (d) { return d.date; }))
+    yLineChart.domain([0, d3.max(data, function (d) { return d.value; })])
+
+    svg.append("path")
+        .attr("fill", "none")
+        .attr("stroke-width", 2)
+        .attr("stroke", type.color)
+        .attr("class", "line")
+        .attr("d", valueline(data))
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + heightLineChart + ")")
+        .call(xAxisLineChart)
+        .selectAll(".tick text")
+        .style("text-anchor", "center")
+        .attr("x",widthLineChart/24);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxisLineChart)
+        .append("text")
+        .attr("fill", "#000")
+        .attr("y", -18.5)
+        .attr("dy", "0.71em")
+        .attr("text-anchor", "middle")
+        .text(type.yAxisLabel);
+
+    svg.append("text")
+        .attr("x", widthLineChart/2)
+        .attr("y", 0 - (marginLineChart.top / 2))
+        .attr("text-anchor", "middle")
+        .text(type.name)
+}
+
+function transitionStreamGraph() {
+    // Layers austauschen und Übergang animieren
+    let t;
+    d3.selectAll("path")
+        .data((t= layers1,
+            layers1 = layers0,
+            layers0 = t))
+        .transition(name = "changeLayers")
+        .duration(1500)
+        .attr("d", function(d) { return area(d.values);});
+}
+
+function transitionLineChart(lineChartDic, data) {
+
+    xLineChart.domain(d3.extent(data, function (d) { return d.date; }))
+    yLineChart.domain([0, d3.max(data, function(d) { return d.value;  }) ]);
+
+    d3.select(lineChartDic.chartName).selectAll(".line")
+        .transition(name= "changeLine")
+        .duration(1500)
+        .attr("d", valueline(data))
+    d3.select(lineChartDic.chartName).selectAll(".y.axis")
+        .transition()
+        .duration(1500)
+        .call(yAxisLineChart)
+}
+
+/**
+ * Übergang zwischen den Jahren animieren
+ */
+function transition() {
+    if (year === 2019) {
+        d3.select(".corona").style("opacity", 0)
+        x.domain(d3.extent(data2019, function (d) {
+            return d.date;
+        }));
+    } else if (year === 2020) {
+        d3.select(".corona").style("opacity", 1)
+        x.domain(d3.extent(data2020, function (d) {
+            return d.date;
+        }));
+    }
+
+    transitionStreamGraph()
+
+    let t = dataWetter1
+    dataWetter1 = dataWetter
+    dataWetter = t
+
+    transitionLineChart(lineCharts.Wetter, dataWetter)
+
+    t = dataFluege1
+    dataFluege1 = dataFluege
+    dataFluege = t
+
+    transitionLineChart(lineCharts.Fluege, dataFluege)
+
+    t = dataCorona1
+    dataCorona1 = dataCorona
+    dataCorona = t
+
+    transitionLineChart(lineCharts.Corona, dataCorona)
+}
+
+function setUp() {
+    setUpData()
+    setUpGraph()
+    setUpLineChart(lineCharts.Wetter, dataWetter)
+    setUpLineChart(lineCharts.Fluege, dataFluege)
+    setUpLineChart(lineCharts.Corona, dataCorona)
+}
+
 /**
  * Funktion zur Erstellung des Graphen. Zuerst werde Daten geladen, wenn diese Promise resolved ist, wird der Graph
  * erstellt.
  */
 function start() {
     loadPromise().then(() => {
-        setUpGraph()
-    }).catch((reason) => {
-        console.error("Something went wrong while loading the Data: " + reason)
+        setUp()
     })
 }
 
