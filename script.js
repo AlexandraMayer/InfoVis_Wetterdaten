@@ -6,10 +6,10 @@ strokecolor = colorrange[0];
 year = 2020;
 
 // Dictionary für die Funktionen setUpLineGraph und transitionLineGraph
-const lineCharts = {Wetter : {name: "Abweichung Wettervorhersage",
+const lineCharts = {Wetter : {name: "Abweichung Wettervorhersage (Temperatur)",
         chartName: ".lineChartWeather",
         color : colorrange[2],
-        yAxisLabel: "Temperatur (°C)"},
+        yAxisLabel: "Abweichung (°C)"},
     Fluege: {name: "Anzahl Flüge Deutschland",
         chartName : ".lineChartFlights",
         color: colorrange[1],
@@ -344,6 +344,7 @@ var xAxisLineChart = d3.svg.axis().scale(xLineChart)
     .orient("bottom").tickFormat(customTimeFormat);
 
 var yAxisLineChart = d3.svg.axis().scale(yLineChart)
+    .ticks(6)
     .orient("left");
 
 var valueline = d3.svg.line()
