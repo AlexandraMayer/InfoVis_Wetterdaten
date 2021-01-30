@@ -6,10 +6,10 @@ strokecolor = colorrange[0];
 year = 2020;
 
 // Dictionary für die Funktionen setUpLineGraph und transitionLineGraph
-const lineCharts = {Wetter : {name: "Abweichung Wettervorhersage",
+const lineCharts = {Wetter : {name: "Abweichung Wettervorhersage (Temperatur)",
         chartName: ".lineChartWeather",
         color : colorrange[2],
-        yAxisLabel: "Temperatur (°C)"},
+        yAxisLabel: "Abweichung (°C)"},
     Fluege: {name: "Anzahl Flüge Deutschland",
         chartName : ".lineChartFlights",
         color: colorrange[1],
@@ -140,8 +140,8 @@ var customTimeFormat = germanFormatters.timeFormat.multi([
     [":%S", function(d) { return d.getSeconds(); }],
     ["%I:%M", function(d) { return d.getMinutes(); }],
     ["%Hh", function(d) { return d.getHours(); }],
-    ["%a %d", function(d) { return d.getDay() && d.getDate() != 1; }],
-    ["%b %d", function(d) { return d.getDate() != 1; }],
+    ["%a %d", function(d) { return d.getDay() && d.getDate() !== 1; }],
+    ["%b %d", function(d) { return d.getDate() !== 1; }],
     ["%B", function(d) { return d.getMonth()+1; }],
     ["%Y", function() { return true; }]
 ]);
@@ -169,6 +169,48 @@ var area = d3.svg.area()
     .x(function(d) { return x(d.date); })
     .y0(function(d) { return y(d.y0); })
     .y1(function(d) { return y(d.y0 + d.y); });
+
+/**
+ * Funktion, die zu dem Graphen eine vertikale Linie für den Tooltip hinzufügt.
+ */
+function addVerticalTooltipLine() {
+    // Vertikale Linie bei Maus auf dem Graph
+    var lineHeight = height + "px";
+    // var lineTop = d3.select(".chart").node().offsetTop + margin.top;
+    var lineBottom = d3.select(".chart").node().getBoundingClientRect().bottom  + "px";
+    var lineLeft = d3.select(".chart").node().getBoundingClientRect().left  + "px";
+
+    console.log(d3.select(".chart").node().getBoundingClientRect());
+    var vertical = d3.select(".chart")
+        .append("div")
+        .attr("class", "remove")
+        .style("position", "absolute")
+        .style("z-index", "19")
+        .style("width", "2px")
+        .style("height", lineHeight)
+        .style("top", lineTop +"px")
+        .style("bottom", lineBottom)
+        .style("left", lineLeft)
+        .style("background", "#007e90")
+        .style("visibility", "hidden");
+
+    // Position der vertikalen Linie
+    d3.select(".chart")
+        .on("mousemove", function(){
+            mouse = d3.mouse(this);
+            mouseX = mouse[0] + 5;
+            if (mouseX < margin.left + 9 || mouseX > width + margin.right - 22) {
+                vertical.style("visibility", "hidden");
+            } else {
+                vertical.style("left", mouseX + "px" ).style("visibility", "visible");
+            }
+        })
+        // keine vertikale Linie, wenn Maus nicht auf Graph
+        .on("mouseout", function (){
+            vertical.style("visibility", "hidden");
+        });
+}
+
 
 /**
  * Funktion, die den Graphen erstellt. Wird nur einmal ganz am Anfang aufgerufen (bei Wechsel nur noch tranisiton)
@@ -265,6 +307,10 @@ function setUpGraph() {
             // Inhalt des Tooltips
             let tooltipValueData;
             let tooltipBorderColor;
+            function formatNumber(num) {
+                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            }
+            valueData = formatNumber(valueData);
             if (d.key === "Gesamt Corona Positive") {
                 tooltipValueData = valueData + " Personen";
                 tooltipBorderColor = colorrange[0];
@@ -294,42 +340,37 @@ function setUpGraph() {
             tooltip.style("visibility", "hidden");
         })
 
-    // Vertikale Linie bei Maus auf dem Graph
-    var lineHeight = height + "px";
-    var lineTop = d3.select(".chart").node().offsetTop + margin.top + "px";
-    var lineBottom = d3.select(".chart").node().getBoundingClientRect().bottom  + "px";
-    var lineLeft = d3.select(".chart").node().getBoundingClientRect().left  + "px";
-    var vertical = d3.select(".chart")
-        .append("div")
-        .attr("class", "remove")
-        .style("position", "absolute")
-        .style("z-index", "19")
-        .style("width", "2px")
-        .style("height", lineHeight)
-        .style("top", lineTop)
-        .style("bottom", lineBottom)
-        .style("left", lineLeft)
-        .style("background", "#007e90")
-        .style("visibility", "hidden");
-
-    // Position der vertikalen Linie
-    d3.select(".chart")
-        .on("mousemove", function(){
-            mouse = d3.mouse(this);
-            mouseX = mouse[0] + 5;
-            if (mouseX < margin.left + 9 || mouseX > width + margin.right - 22) {
-                vertical.style("visibility", "hidden");
-            } else {
-                vertical.style("left", mouseX + "px" ).style("visibility", "visible");
-            }
-        })
-        // keine vertikale Linie, wenn Maus nicht auf Graph
-        .on("mouseout", function (){
-            vertical.style("visibility", "hidden");
-        });
+    addVerticalTooltipLine();
 }
 
-const marginLineChart = {top: 40, right: 20, bottom: 70, left: 70},
+
+// Position vertical Line
+var lineTop = d3.select(".chart").node().offsetTop + margin.top;
+
+// Create collapseabile
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+            lineTop -= content.scrollHeight;
+            addVerticalTooltipLine();
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+            lineTop += content.scrollHeight;
+            addVerticalTooltipLine()
+        }
+    });
+}
+
+
+
+
+const marginLineChart = {top: 40, right: 20, bottom: 100, left: 70},
     widthLineChart = document.body.clientWidth - marginLineChart.left - marginLineChart.right,
     heightLineChart = 275 - marginLineChart.top - marginLineChart.bottom;
 
@@ -340,6 +381,7 @@ var xAxisLineChart = d3.svg.axis().scale(xLineChart)
     .orient("bottom").tickFormat(customTimeFormat);
 
 var yAxisLineChart = d3.svg.axis().scale(yLineChart)
+    .ticks(6)
     .orient("left");
 
 var valueline = d3.svg.line()
@@ -367,7 +409,7 @@ function setUpLineChart(dicForGraph, data) {
 
     svg.append("path")
         .attr("fill", "none")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 3)
         .attr("stroke", dicForGraph.color)
         .attr("class", "line")
         .attr("d", valueline(data))
