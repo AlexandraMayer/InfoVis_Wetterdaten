@@ -63,3 +63,5 @@ ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/hourl
 google docs:
 Präsentationsvorbereitungen: https://docs.google.com/document/d/1MX3wBYyD-8DUhYtaz3AhmgjJM-kpsJMKjZiNoAzAz-Y/edit
 
+https://docs.google.com/presentation/d/1gxgQFYzfSEoywLhfWIYGiN8oc3AOyBykJPFE3ii4gCM/edit?pli=1#slide=id.p
+
