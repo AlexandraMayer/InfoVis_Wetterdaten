@@ -140,8 +140,8 @@ var customTimeFormat = germanFormatters.timeFormat.multi([
     [":%S", function(d) { return d.getSeconds(); }],
     ["%I:%M", function(d) { return d.getMinutes(); }],
     ["%Hh", function(d) { return d.getHours(); }],
-    ["%a %d", function(d) { return d.getDay() && d.getDate() != 1; }],
-    ["%b %d", function(d) { return d.getDate() != 1; }],
+    ["%a %d", function(d) { return d.getDay() && d.getDate() !== 1; }],
+    ["%b %d", function(d) { return d.getDate() !== 1; }],
     ["%B", function(d) { return d.getMonth()+1; }],
     ["%Y", function() { return true; }]
 ]);
@@ -329,7 +329,7 @@ function setUpGraph() {
         });
 }
 
-const marginLineChart = {top: 40, right: 20, bottom: 70, left: 70},
+const marginLineChart = {top: 40, right: 20, bottom: 100, left: 70},
     widthLineChart = document.body.clientWidth - marginLineChart.left - marginLineChart.right,
     heightLineChart = 275 - marginLineChart.top - marginLineChart.bottom;
 
