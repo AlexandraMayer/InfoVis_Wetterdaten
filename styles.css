@@ -55,10 +55,21 @@ header h2 {
     font-size: 24px;
 }
 
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 50px;
+}
+
+
 /* Buttons */
 .middle {
-	 padding: 20px;
-	 text-align: left;
+    width: 90%;
+    padding-left: 30px;
+    text-align: left;
+    grid-column: 1;
+    grid-row: 1;
+
 }
  .middle input[type="radio"] {
 	 display: none;
@@ -129,7 +140,7 @@ header h2 {
 
 /* Legende*/
 .legend {
-    border: 2px solid white;
+    border: 2px solid black;
     height: 150px;
     padding: 5px;
 }
@@ -143,41 +154,43 @@ header h2 {
 .weather {
     padding: 5px;
     margin: 2%;
-    width: 25%;
+    width: 80%;
     height: 65%;
     float: left;
     border: 2px solid #B00020;
     background: #B00020;
     border-radius: 5px;
     color: white;
+    grid-column: 2;
+    grid-row: 1;
 }
 
 .flights {
     padding: 5px;
-    width: 25%;
-    margin-bottom: 2%;
-    margin-top: 2%;
-    margin-right: 2%;
+    width: 80%;
+    margin: 2%;
     height: 65%;
     float: left;
     border: 2px solid #3700B3;
     background: #3700B3;
     border-radius: 5px;
     color: white;
+    grid-column: 3;
+    grid-row: 1;
 }
 
 .corona {
     padding: 5px;
-    margin-bottom: 2%;
-    margin-right: 2%;
-    margin-top: 2%;
-    width: 25%;
+    margin: 2%;
+    width: 80%;
     height: 65%;
     float: left;
     border: 2px solid #03DAC6;
     background: #03DAC6;
     border-radius: 5px;
     color: white;
+    grid-column: 4;
+    grid-row: 1;
 }
 
 /* Tooltip*/
@@ -215,3 +228,4 @@ li{
     display: inline;
     margin: 10px;
 }
+
