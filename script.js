@@ -265,6 +265,10 @@ function setUpGraph() {
             // Inhalt des Tooltips
             let tooltipValueData;
             let tooltipBorderColor;
+            function formatNumber(num) {
+                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+            }
+            valueData = formatNumber(valueData);
             if (d.key === "Gesamt Corona Positive") {
                 tooltipValueData = valueData + " Personen";
                 tooltipBorderColor = colorrange[0];
