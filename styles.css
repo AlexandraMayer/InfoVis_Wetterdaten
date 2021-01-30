@@ -33,6 +33,11 @@ p {
     shape-rendering: crispEdges;
 }
 
+.gridLine path, .gridLine line{
+    fill: none;
+    shape-rendering: crispedges;
+    stroke: #e4e4e4;
+}
 
 /* Header */
  header {
