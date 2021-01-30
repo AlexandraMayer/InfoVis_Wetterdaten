@@ -126,6 +126,12 @@ header h2 {
 	 content: "\e074";
 }
 
+.beschreibungsBox {
+    border: 2px solid #018786;
+    height: 150px;
+    padding: 5px;
+    margin-top: 10px;
+ }
 
 
 .legend {
