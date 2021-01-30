@@ -1,3 +1,18 @@
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+    });
+}
+
 var datearray = [];
 //colorrange = ["#7796BC", "#997AC0", "#95DF85"];
 colorrange = ["#03DAC6", "#3700B3", "#B00020"];

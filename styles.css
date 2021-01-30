@@ -128,16 +128,62 @@ header h2 {
 .middle .year-19 span:before {
     content: "\f072";
 }
- .middle .year-20 span:before {
+.middle .year-20 span:before {
 	 content: "\e074";
 }
 
-.beschreibungsBox {
-    border: 2px solid #018786;
-    height: 150px;
-    padding: 5px;
-    margin-top: 10px;
- }
+
+/* Collapse */
+.Collapse {
+    padding: 10px;
+}
+
+
+.collapsible {
+    background-color: white;
+    color: #018786;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: 1px solid #018786;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+}
+
+.active, .collapsible:hover {
+    background-color: #018786;
+    color: white;
+}
+
+/* hover Button*/
+.collapsible:hover:after {
+    color: white;
+}
+
+/* + Button*/
+.collapsible:after {
+    content: '\002B';
+    color: #018786;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+/* - Button*/
+.active:after {
+    content: "\2212";
+    color: white;
+}
+
+.content {
+    padding: 0 18px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    background-color: #f1f1f1;
+}
+
 
 /* Legende*/
 .legend {
@@ -229,4 +275,6 @@ li{
     display: inline;
     margin: 10px;
 }
+
+
 
