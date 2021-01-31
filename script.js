@@ -384,6 +384,13 @@ var yAxisLineChart = d3.svg.axis().scale(yLineChart)
     .ticks(6)
     .orient("left");
 
+var yGridLine = d3.svg.axis()
+    .scale(yLineChart)
+    .tickSize(-widthLineChart, 0, 0)
+    .tickFormat("")
+    .ticks(6)
+    .orient("left");
+
 var valueline = d3.svg.line()
     .x(function (d) { return xLineChart(d.date) })
     .y(function (d) { return yLineChart(d.value)});
@@ -406,6 +413,11 @@ function setUpLineChart(dicForGraph, data) {
 
     xLineChart.domain(d3.extent(data, function (d) { return d.date; }))
     yLineChart.domain([0, d3.max(data, function (d) { return d.value; })])
+
+    svg.append("g")
+        .classed("gridLine", true)
+        .attr("transform", "translate(0,0)")
+        .call(yGridLine);
 
     svg.append("path")
         .attr("fill", "none")
@@ -478,16 +490,22 @@ function transitionStreamGraph() {
 function transitionLineChart(dicForGraph, data) {
 
     xLineChart.domain(d3.extent(data, function (d) { return d.date; }))
-    yLineChart.domain([0, d3.max(data, function(d) { return d.value;  }) ]);
+    yLineChart.domain([0, d3.max(data, function(d) { return d.value; })]);
 
     d3.select(dicForGraph.chartName).selectAll(".line")
         .transition(name= "changeLine")
         .duration(1500)
-        .attr("d", valueline(data))
+        .attr("d", valueline(data));
+
     d3.select(dicForGraph.chartName).selectAll(".y.axis")
         .transition()
         .duration(1500)
-        .call(yAxisLineChart)
+        .call(yAxisLineChart);
+
+    d3.select(dicForGraph.chartName).selectAll(".gridLine")
+        .transition()
+        .duration(1500)
+        .call(yGridLine);
 }
 
 /**
@@ -507,36 +525,36 @@ function transition() {
         }));
     }
 
-    transitionStreamGraph()
+    transitionStreamGraph();
 
     let t = dataWetter1
     dataWetter1 = dataWetter
     dataWetter = t
 
-    transitionLineChart(lineCharts.Wetter, dataWetter)
+    transitionLineChart(lineCharts.Wetter, dataWetter);
 
     t = dataFluege1
     dataFluege1 = dataFluege
     dataFluege = t
 
-    transitionLineChart(lineCharts.Fluege, dataFluege)
+    transitionLineChart(lineCharts.Fluege, dataFluege);
 
     t = dataCorona1
     dataCorona1 = dataCorona
     dataCorona = t
 
-    transitionLineChart(lineCharts.Corona, dataCorona)
+    transitionLineChart(lineCharts.Corona, dataCorona);
 }
 
 /**
  * Daten verarbeiten und Graphen erstellen
  */
 function setUp() {
-    setUpData()
-    setUpGraph()
-    setUpLineChart(lineCharts.Wetter, dataWetter)
-    setUpLineChart(lineCharts.Fluege, dataFluege)
-    setUpLineChart(lineCharts.Corona, dataCorona)
+    setUpData();
+    setUpGraph();
+    setUpLineChart(lineCharts.Wetter, dataWetter);
+    setUpLineChart(lineCharts.Fluege, dataFluege);
+    setUpLineChart(lineCharts.Corona, dataCorona);
 }
 
 /**
@@ -545,7 +563,7 @@ function setUp() {
  */
 function start() {
     loadPromise().then(() => {
-        setUp()
+        setUp();
     })
 }
 
