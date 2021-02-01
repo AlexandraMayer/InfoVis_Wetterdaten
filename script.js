@@ -1,3 +1,5 @@
+// Vorlage für Streamgraph von http://bl.ocks.org/WillTurman/4631136
+
 var datearray = [];
 //colorrange = ["#7796BC", "#997AC0", "#95DF85"];
 colorrange = ["#03DAC6", "#3700B3", "#B00020"];
