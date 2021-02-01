@@ -15,7 +15,7 @@ Must-haves:
 
 Nice-to-have:
 - Animation Jahreswechsel
-- Liniendiagramme für Fallzahlen
+- Liniendiagramme
 - Bayernkarte mit Genauigkeit in Abhängikeit von Fallzahlen
 
 ### Roadmap
@@ -25,10 +25,10 @@ Fertig & In-Review:
 - Legende
 - Tooltip vorhanden 
 - Animierter Jahreswechsel
-- Liniendiagramme für Fallzahlen
+- Liniendiagramme
 - Infotext
 - Dokumentation 
-- Finale Präsentat
+- Finale Präsentation
 - Video aufnehmen 
 
 To Do:
