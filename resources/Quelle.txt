@@ -1,2 +1,0 @@
-CDC (Climate Data Center) des Deutschen Wetterdienst
-ftp://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/
